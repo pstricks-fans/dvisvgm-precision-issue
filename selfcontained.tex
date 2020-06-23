@@ -1,0 +1,65 @@
+
+% compile it with pdflatex -shell-escape
+\documentclass{article}
+\usepackage{filecontents}
+
+ %frames.tex
+\begin{filecontents*}{frames.tex}
+\documentclass[pstricks,border=12pt]{standalone}
+\usepackage{pst-plot}
+\begin{document}
+\multido{\i=10+10}{36}
+{
+	\begin{pspicture}[showgrid=false](-2,-2)(2,2)
+  \psline(2;\i)      
+	\end{pspicture}
+}
+\end{document}
+\end{filecontents*}
+
+
+% animated.tex
+\begin{filecontents*}{animated.tex}
+\documentclass[border=12pt]{standalone}
+\usepackage[dvisvgm]{animate}
+\usepackage[dvisvgm]{graphicx}
+\begin{document}
+\animategraphics[controls,loop,autoplay,scale=1]{10}{frames}{}{}
+\end{document}
+\end{filecontents*}
+
+
+
+\begin{document}
+
+
+\immediate\write18{latex frames}
+\immediate\write18{dvips frames}
+\immediate\write18{ps2pdf frames.ps}
+
+
+
+% optionally remove temporary files
+\makeatletter
+\@for\x:={tex,dvi,ps,log,aux}\do{\immediate\write18{cmd /c del frames.\x}}
+\makeatother
+
+
+\immediate\write18{latex animated}
+
+
+% optionally make sure the existing animated.svg has been deleted.
+\immediate\write18{cmd /c del animated.svg}
+
+% there are some peculiarities for --precision=x where x<6.
+\immediate\write18{dvisvgm --bbox=papersize --font-format=woff --zoom=-1 --precision=5 animated}
+
+% optionally remove temporary files
+\makeatletter
+\@for\x:={tex,dvi,ps,log,aux}\do{\immediate\write18{cmd /c del animated.\x}}
+\makeatother
+
+Please view the generated animated.svg! 
+
+
+\end{document}
