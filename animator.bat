@@ -3,6 +3,7 @@ echo off
 rem %1 input filename without extension
 rem %2 frame rate
 rem %3 animate options such as palindrome, controls, autoplay, scale=1, loop, etc
+rem %4 standalone border (must include unit)
 
 rem pre-cleaning
 for %%x in (aux log dvi ps pdf svg) do (if exist "%~1.%%x" del "%~1.%%x")
