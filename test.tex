@@ -1,0 +1,10 @@
+\documentclass[pstricks,border=12pt]{standalone}
+\usepackage{pst-plot}
+\begin{document}
+\multido{\i=40+40}{9}
+{
+	\begin{pspicture}[showgrid=false](-2,-2)(2,2)
+  \psline(2;\i)      
+	\end{pspicture}
+}
+\end{document}
